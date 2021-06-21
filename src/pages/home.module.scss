@@ -1,1 +1,41 @@
-// TODO
+.container{
+  padding: 0 23.125rem;
+  margin-top: 4rem;
+}
+
+.content{
+  width: 100%;
+
+  .title{
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .subtitle{
+    font-size: 1.125rem;
+    color:#BBBBBB;
+    margin-bottom: 25px;
+  }
+
+  .footer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    div{
+      display: flex;
+
+      p{
+        font-size: 0.875rem;
+        color:#BBBBBB;
+        margin-left: 10.5px;
+      }
+    }
+
+    div:last-child{
+      margin-left: 28px;
+    }
+  }
+}
+
