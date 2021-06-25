@@ -37,5 +37,26 @@
       margin-left: 28px;
     }
   }
+
+  & + .content {
+    margin-top: 50px;
+  }
+}
+
+.loadMore{
+  margin-top: 55px;
+  padding: 10px 10px 10px 0;
+  cursor: pointer;
+
+  p{
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #FF57B2;
+    transition: all 0.2s;
+
+    &:hover{
+      filter: brightness(0.8);
+    }
+  }
 }
 
