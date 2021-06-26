@@ -4,10 +4,10 @@ import { GetStaticProps } from 'next';
 import { FaCalendar, FaUser } from 'react-icons/fa';
 import Prismic from '@prismicio/client';
 import { format } from 'date-fns';
-
+import Link from "next/link";
 
 import { getPrismicClient } from '../services/prismic';
-// import commonStyles from '../styles/common.module.scss';
+import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
 interface Post {
@@ -32,8 +32,8 @@ interface HomeProps {
 function convertToInterface(response: any): Post[] {
   const posts = response.results.map(post => {
     return {
-      uid: post.slugs[0],
-      first_publication_date: format(new Date(post.first_publication_date), 'dd MMM yyyy'),
+      uid: post.uid,
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
@@ -71,18 +71,22 @@ export default function Home(props: HomeProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={commonStyles.container}>
       {posts?.map(post => (
         <div className={styles.content} key={post.uid}>
 
-          <p className={styles.title}>{post.data.title}</p>
-          <p className={styles.subtitle}>
-            {post.data.subtitle}
-          </p>
+          <Link href={`/post/${post.uid}`}>
+            <p className={styles.title}>{post.data.title}</p>
+          </Link>
+          <Link href={`/post/${post.uid}`}>
+            <p className={styles.subtitle}>
+              {post.data.subtitle}
+            </p>
+          </Link>
           <div className={styles.footer}>
             <div>
               <FaCalendar size={15} />
-              <p>{post.first_publication_date}</p>
+              <p>{format(new Date(post.first_publication_date), 'dd MMM yyyy').toLocaleLowerCase()}</p>
             </div>
             <div>
               <FaUser size={15} />
@@ -103,33 +107,22 @@ export default function Home(props: HomeProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
 
+  const response = await prismic.query(Prismic.predicates.at('document.type', 'posts'), {
+    pageSize: 1,
+    orderings: '[document.first_publication_date desc]',
+    page: 1
+  })
 
-  try {
-    const response = await prismic.query(Prismic.predicates.at('document.type', 'posts'), {
-      pageSize: 1
-    })
+  const posts = convertToInterface(response);
 
-    const posts = convertToInterface(response);
-
-    return {
-      props: {
-        postsPagination: {
-          next_page: response.next_page,
-          results: posts
-        }
-      },
-      revalidate: 60 * 60 * 24, //24 hours
-    }
-  } catch {
-    return {
-      props: {
-        postsPagination: {
-          next_page: null,
-          results: []
-        }
-      },
-      revalidate: 60 * 60 * 24, //24 hours
-    }
+  return {
+    props: {
+      postsPagination: {
+        next_page: response.next_page,
+        results: posts
+      }
+    },
+    revalidate: 2 * 60 * 60, //2 hours
   }
 
 };
