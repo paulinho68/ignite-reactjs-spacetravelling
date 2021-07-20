@@ -33,4 +33,4 @@ Neste desafio foi usado as seguintes dependências:
 
 ![Application](https://raw.githubusercontent.com/paulinho68/ignite-reactjs-spacetravelling/master/assets/Screenshot_1.png)
 
-![Application](https://raw.githubusercontent.com/paulinho68/ignite-reactjs-spacetravelling/master/asstes/Screenshot_2.png)
+![Application](https://raw.githubusercontent.com/paulinho68/ignite-reactjs-spacetravelling/master/assets/Screenshot_2.png)
